@@ -23,6 +23,9 @@ const renderChart = (props) => {
         });
         window.ReactNativeWebView.postMessage(JSON.stringify({"types":"ON_PRESS","payload": paramsString}));
       });
+      myChart.on('dblclick', function(params) {
+        window.ReactNativeWebView.postMessage(JSON.stringify({"types":"DBL_CLICK","payload": paramsString}));
+      });
     `
 }
 

@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {View, StyleSheet, Platform} from 'react-native';
-import {WebView as RNWebView} from 'react-native-webview';
+import React, { Component } from 'react';
+import { View, StyleSheet, Platform } from 'react-native';
+import { WebView as RNWebView } from 'react-native-webview';
 import renderChart from './utils/renderChart';
-import {toString} from './utils/utils';
-import {index} from './tmp/templates';
+import { toString } from './utils/utils';
+import { index } from './tmp/templates';
 import echarts from './lib/echarts.min';
 import PropTypes from 'prop-types';
 
@@ -32,13 +32,14 @@ class Echarts extends Component {
 
   static defaultProps = {
     backgroundColor: '#00000000',
-    onPress: () => {}
+    onPress: () => { },
+    dblClick: () => { }
   }
 
   render() {
     return (
-      <View style={{flexDirection: 'row', width: this.props.width}}>
-        <View style={{flex: 1, height: this.props.height || 400}}>
+      <View style={{ flexDirection: 'row', width: this.props.width }}>
+        <View style={{ flex: 1, height: this.props.height || 400 }}>
           <RNWebView
             ref={this.chartRef}
             originWhitelist={['*']}
@@ -46,8 +47,8 @@ class Echarts extends Component {
             allowUniversalAccessFromFileURLs={true}
             geolocationEnabled={true}
             mixedContentMode={'always'}
-            renderLoading={this.props.renderLoading || (() => <View style={{backgroundColor: this.props.backgroundColor}} />)} // 设置空View，修复ioswebview闪白
-            style={{backgroundColor: this.props.backgroundColor}} // 设置背景色透明，修复android闪白
+            renderLoading={this.props.renderLoading || (() => <View style={{ backgroundColor: this.props.backgroundColor }} />)} // 设置空View，修复ioswebview闪白
+            style={{ backgroundColor: this.props.backgroundColor }} // 设置背景色透明，修复android闪白
             scrollEnabled={false}
             onMessage={this._handleMessage}
             javaScriptEnabled={true}
@@ -72,11 +73,13 @@ class Echarts extends Component {
         this.props.onPress(JSON.parse(data.payload))
         break;
       case 'GET_IMAGE':
-        this.setState({data}, () => {
+        this.setState({ data }, () => {
           console.log(this.state.data)
           this.emitImg()
         })
         break;
+      case "DBL_CLICK":
+        this.props.dblClick()
       default:
         break;
     }
@@ -105,7 +108,7 @@ class Echarts extends Component {
     this.chartRef.current.injectJavaScript(run);
   }
 
-  emitImg = () => {};
+  emitImg = () => { };
 
   getImage = (callback) => {
     const run = `
@@ -132,12 +135,13 @@ class Echarts extends Component {
 
 }
 
-export {Echarts, echarts};
+export { Echarts, echarts };
 Echarts.propTypes = {
   option: PropTypes.object,
   backgroundColor: PropTypes.string,
   width: PropTypes.number,
   height: PropTypes.number,
   renderLoading: PropTypes.func,
-  onPress: PropTypes.func
+  onPress: PropTypes.func,
+  dblClick: PropTypes.func
 }

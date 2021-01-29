@@ -1,4 +1,4 @@
-import {toString} from './utils';
+import { toString } from './utils';
 
 const renderChart = (props) => {
   const height = `${props.height || 400}px`;
@@ -10,24 +10,28 @@ const renderChart = (props) => {
       document.getElementById('main').style.backgroundColor = "${backgroundColor}";
       var myChart = echarts.init(document.getElementById('main'));
       myChart.setOption(${toString(props.option)});
-      myChart.on('click', function(params) {
-        var seen = [];
-        var paramsString = JSON.stringify(params, function(key, val) {
-          if (val != null && typeof val == "object") {
-            if (seen.indexOf(val) >= 0) {
-              return;
-            }
-            seen.push(val);
-          }
-          return val;
-        });
-        window.ReactNativeWebView.postMessage(JSON.stringify({"types":"ON_PRESS","payload": paramsString}));
-      });
-      myChart.on('dblclick', function(params) {
-        window.ReactNativeWebView.postMessage(JSON.stringify({"types":"DBL_CLICK","payload": paramsString}));
-      });
+
+      var g_clickTime=null;
+			var g_TimeFn = null;
+      var g_onItemName = null;
+      
+       myChart.on('click', function(params) {
+           var seen = [];
+          var paramsString = JSON.stringify(params, function(key, val) {
+            if (val != null && typeof val == "object") {
+              if (seen.indexOf(val) >= 0) {
+                 return;
+               }
+               seen.push(val);
+             }
+             return val;
+           });
+           window.ReactNativeWebView.postMessage(JSON.stringify({"types":"ON_PRESS","payload": paramsString}));
+         });
     `
 }
 
 
 export default renderChart;
+
+

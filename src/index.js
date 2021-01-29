@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform,TouchableOpacity } from 'react-native';
 import { WebView as RNWebView } from 'react-native-webview';
 import renderChart from './utils/renderChart';
 import { toString } from './utils/utils';
@@ -16,7 +16,6 @@ class Echarts extends Component {
       isFirstLoad: true,
       setOption: this.setOption
     }
-
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -35,7 +34,6 @@ class Echarts extends Component {
     onPress: () => { },
     dblClick: () => { }
   }
-
   render() {
     return (
       <View style={{ flexDirection: 'row', width: this.props.width }}>
@@ -79,6 +77,7 @@ class Echarts extends Component {
         })
         break;
       case "DBL_CLICK":
+        alert('dbclick')
         this.props.dblClick()
       default:
         break;
